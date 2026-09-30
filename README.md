@@ -220,12 +220,12 @@ NIVORA can be improved further in the future by adding features such as:
 ## 👥 Team Members
 
 This project was developed by:
-
+* **Rohit Adhav**
 * **Moreshwar Shukla**
 * **Prathamesh Kulkarni**
 * **Vaishnavi Ambhore**
 * **Bhakti Kulkarni**
-* **Rohit Adhav**
+
 
 ---
 
@@ -239,7 +239,7 @@ NIVORA is currently developed as a working prototype to demonstrate room search,
 
 ## 🔗 Project Links
 
-* 🌐 **NIVORA Web Application:** Add your link here
-* 📝 **Google Form:** Add your link here
-* 📊 **Looker Studio Dashboard:** Add your link here
-* 💻 **GitHub Repository:** Add your GitHub link here
+* 🌐 **NIVORA Web Application:** - https://script.google.com/macros/s/AKfycbwnxr4Tgl1IGFuK6rJSGn-veByLQpDbGl-uJFK2XjAygMT-qCmaIyxdQ4oyOk7wEYB_/exec
+* 📝 **Google Form:** - https://forms.gle/iQwzMm5Y2p8kx5XNA
+* 📊 **Looker Studio Dashboard:** - https://datastudio.google.com/reporting/df975ee5-def1-4a9f-9ea8-4a200ec1d70c
+* 💻 **GitHub Repository:** - https://github.com/RohitAdhav7935/NIVORA-Smart-Room-Search
