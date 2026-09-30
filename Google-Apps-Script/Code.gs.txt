@@ -1,0 +1,264 @@
+// =====================================================
+// ROOM FINDER - GOOGLE APPS SCRIPT WEB APP
+// =====================================================
+
+// Your Google Spreadsheet ID
+const SPREADSHEET_ID = "1I7t-aD9UxCPxWEtCiQipRQBJGfAzRHyxlKRNQYICbzg";
+
+// Your sheet/tab GID
+const SHEET_GID = 1177157000;
+
+
+// =====================================================
+// OPEN WEB APP
+// =====================================================
+
+function doGet() {
+  return HtmlService
+    .createTemplateFromFile("Index")
+    .evaluate()
+    .setTitle("Room Finder")
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+
+// =====================================================
+// GET SHEET
+// =====================================================
+
+function getRoomSheet() {
+
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+
+  const sheets = ss.getSheets();
+
+  for (let i = 0; i < sheets.length; i++) {
+
+    if (sheets[i].getSheetId() == SHEET_GID) {
+      return sheets[i];
+    }
+
+  }
+
+  // Fallback: first sheet
+  return sheets[0];
+}
+
+
+// =====================================================
+// GET ALL ROOM DATA
+// =====================================================
+
+function getRooms() {
+
+  const sheet = getRoomSheet();
+
+  const data = sheet.getDataRange().getDisplayValues();
+
+  if (data.length < 2) {
+    return [];
+  }
+
+  const headers = data[0];
+
+  const rows = data.slice(1);
+
+  const rooms = [];
+
+  rows.forEach(function(row, index) {
+
+    // Skip completely empty rows
+    if (row.join("").trim() === "") {
+      return;
+    }
+
+    const room = {
+
+      id: index + 1,
+
+      contact: findValue(
+        headers,
+        row,
+        [
+          "contact number",
+          "contact",
+          "mobile",
+          "phone",
+          "संपर्क क्रमांक"
+        ]
+      ),
+
+      propertyType: findValue(
+        headers,
+        row,
+        [
+          "property type",
+          "property",
+          "प्रॉपर्टी"
+        ]
+      ),
+
+      availability: findValue(
+        headers,
+        row,
+        [
+          "room availability",
+          "availability",
+          "available",
+          "उपलब्धता",
+          "रूम उपलब्धता"
+        ]
+      ),
+
+      roomsAvailable: findValue(
+        headers,
+        row,
+        [
+          "number of rooms available",
+          "rooms available",
+          "number of rooms",
+          "उपलब्ध रूमची संख्या"
+        ]
+      ),
+
+      furnishing: findValue(
+        headers,
+        row,
+        [
+          "room furnishing",
+          "furnishing",
+          "रूमची सुविधा"
+        ]
+      ),
+
+      suitableFor: findValue(
+        headers,
+        row,
+        [
+          "suitable for",
+          "suitable",
+          "योग्य"
+        ]
+      ),
+
+      area: findValue(
+        headers,
+        row,
+        [
+          "area",
+          "क्षेत्र"
+        ]
+      ),
+
+      address: findValue(
+        headers,
+        row,
+        [
+          "full address",
+          "address",
+          "पूर्ण पत्ता"
+        ]
+      ),
+
+      rent: findValue(
+        headers,
+        row,
+        [
+          "monthly rent",
+          "rent",
+          "मासिक भाडे"
+        ]
+      ),
+
+      deposit: findValue(
+        headers,
+        row,
+        [
+          "security deposit",
+          "deposit",
+          "अनामत रक्कम"
+        ]
+      ),
+
+      electricity: findValue(
+        headers,
+        row,
+        [
+          "electricity charges",
+          "electricity",
+          "वीज शुल्क"
+        ]
+      ),
+
+      water: findValue(
+        headers,
+        row,
+        [
+          "water availability",
+          "water",
+          "पाण्याची सुविधा"
+        ]
+      ),
+
+      parking: findValue(
+        headers,
+        row,
+        [
+          "parking available",
+          "parking",
+          "पार्किंगची सुविधा"
+        ]
+      ),
+
+      photos: findValue(
+        headers,
+        row,
+        [
+          "upload room photos",
+          "room photos",
+          "photos",
+          "फोटो"
+        ]
+      )
+
+    };
+
+    rooms.push(room);
+
+  });
+
+  return rooms;
+}
+
+
+// =====================================================
+// FIND COLUMN VALUE
+// =====================================================
+
+function findValue(headers, row, keywords) {
+
+  for (let i = 0; i < headers.length; i++) {
+
+    const header = String(headers[i])
+      .toLowerCase()
+      .trim();
+
+    for (let j = 0; j < keywords.length; j++) {
+
+      const keyword = String(keywords[j])
+        .toLowerCase()
+        .trim();
+
+      if (header.includes(keyword)) {
+
+        return row[i] || "";
+
+      }
+
+    }
+
+  }
+
+  return "";
+
+}

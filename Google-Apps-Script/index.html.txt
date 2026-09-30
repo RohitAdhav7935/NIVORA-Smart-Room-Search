@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <base target="_top">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Room Finder</title>
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+
+      margin: 0;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #f5f7fb;
+
+      color: #1f2937;
+
+    }
+
+
+    /* ================================
+       HEADER
+    ================================= */
+
+    .header {
+
+      background: #1d4ed8;
+
+      color: white;
+
+      padding: 28px 20px;
+
+      text-align: center;
+
+    }
+
+    .header h1 {
+
+      margin: 0;
+
+      font-size: 30px;
+
+    }
+
+    .header p {
+
+      margin: 8px 0 0;
+
+      opacity: 0.9;
+
+    }
+
+
+    /* ================================
+       SEARCH AREA
+    ================================= */
+
+    .search-container {
+
+      max-width: 1200px;
+
+      margin: 25px auto;
+
+      padding: 0 20px;
+
+    }
+
+
+    .search-box {
+
+      background: white;
+
+      padding: 20px;
+
+      border-radius: 14px;
+
+      box-shadow:
+        0 4px 15px rgba(0,0,0,0.06);
+
+    }
+
+
+    .search-input {
+
+      width: 100%;
+
+      padding: 14px 16px;
+
+      border: 1px solid #d1d5db;
+
+      border-radius: 10px;
+
+      font-size: 16px;
+
+      outline: none;
+
+    }
+
+
+    .search-input:focus {
+
+      border-color: #2563eb;
+
+    }
+
+
+    .filters {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 12px;
+
+      margin-top: 14px;
+
+    }
+
+
+    select {
+
+      width: 100%;
+
+      padding: 12px;
+
+      border: 1px solid #d1d5db;
+
+      border-radius: 9px;
+
+      background: white;
+
+    }
+
+
+    /* ================================
+       RESULT COUNT
+    ================================= */
+
+    .result-count {
+
+      max-width: 1200px;
+
+      margin: 15px auto;
+
+      padding: 0 20px;
+
+      font-weight: bold;
+
+      color: #374151;
+
+    }
+
+
+    /* ================================
+       ROOM GRID
+    ================================= */
+
+    .room-grid {
+
+      max-width: 1200px;
+
+      margin: auto;
+
+      padding: 0 20px 40px;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 20px;
+
+    }
+
+
+    /* ================================
+       ROOM CARD
+    ================================= */
+
+    .room-card {
+
+      background: white;
+
+      border-radius: 16px;
+
+      overflow: hidden;
+
+      box-shadow:
+        0 5px 20px rgba(0,0,0,0.08);
+
+      transition: 0.2s;
+
+    }
+
+
+    .room-card:hover {
+
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 10px 25px rgba(0,0,0,0.12);
+
+    }
+
+
+    /* ================================
+       PHOTO
+    ================================= */
+
+    .room-photo {
+
+      width: 100%;
+
+      height: 210px;
+
+      background: #e5e7eb;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      overflow: hidden;
+
+    }
+
+
+    .room-photo img {
+
+      width: 100%;
+
+      height: 100%;
+
+      object-fit: cover;
+
+    }
+
+
+    .no-photo {
+
+      font-size: 50px;
+
+      color: #9ca3af;
+
+    }
+
+
+    /* ================================
+       CARD CONTENT
+    ================================= */
+
+    .room-content {
+
+      padding: 18px;
+
+    }
+
+
+    .room-title {
+
+      font-size: 20px;
+
+      font-weight: bold;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .area {
+
+      color: #2563eb;
+
+      font-weight: 600;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .rent {
+
+      font-size: 22px;
+
+      font-weight: bold;
+
+      color: #16a34a;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .details {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 10px;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .detail {
+
+      background: #f8fafc;
+
+      padding: 9px;
+
+      border-radius: 8px;
+
+      font-size: 13px;
+
+    }
+
+
+    .detail strong {
+
+      display: block;
+
+      margin-bottom: 3px;
+
+      color: #374151;
+
+    }
+
+
+    /* ================================
+       ADDRESS
+    ================================= */
+
+    .address {
+
+      border-top: 1px solid #e5e7eb;
+
+      padding-top: 13px;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+
+    }
+
+
+    /* ================================
+       CONTACT BUTTON
+    ================================= */
+
+    .contact-btn {
+
+      display: block;
+
+      width: 100%;
+
+      margin-top: 15px;
+
+      padding: 12px;
+
+      border: none;
+
+      border-radius: 9px;
+
+      background: #16a34a;
+
+      color: white;
+
+      text-align: center;
+
+      text-decoration: none;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+    }
+
+
+    .contact-btn:hover {
+
+      background: #15803d;
+
+    }
+
+
+    /* ================================
+       NO RESULTS
+    ================================= */
+
+    .no-results {
+
+      grid-column: 1 / -1;
+
+      text-align: center;
+
+      padding: 50px;
+
+      background: white;
+
+      border-radius: 14px;
+
+      color: #6b7280;
+
+    }
+
+
+    /* ================================
+       LOADING
+    ================================= */
+
+    .loading {
+
+      text-align: center;
+
+      padding: 60px;
+
+      font-size: 18px;
+
+    }
+
+
+    /* ================================
+       MOBILE
+    ================================= */
+
+    @media(max-width: 900px) {
+
+      .room-grid {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
+      }
+
+      .filters {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+    }
+
+
+    @media(max-width: 600px) {
+
+      .header h1 {
+
+        font-size: 24px;
+
+      }
+
+      .room-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+      .room-photo {
+
+        height: 220px;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =================================
+     HEADER
+================================= -->
+
+<div class="header">
+
+  <h1>🏠 NIVORA - Smart Room Search</h1>
+
+  <p>
+    Find available rooms and properties
+  </p>
+
+</div>
+
+
+<!-- =================================
+     SEARCH
+================================= -->
+
+<div class="search-container">
+
+  <div class="search-box">
+
+    <input
+      type="text"
+      id="searchInput"
+      class="search-input"
+      placeholder="🔍 Search by area, address, property type..."
+      oninput="filterRooms()"
+    >
+
+
+    <div class="filters">
+
+      <select
+        id="propertyFilter"
+        onchange="filterRooms()">
+
+        <option value="">
+          All Property Types
+        </option>
+
+      </select>
+
+
+      <select
+        id="furnishingFilter"
+        onchange="filterRooms()">
+
+        <option value="">
+          All Furnishing
+        </option>
+
+      </select>
+
+
+      <select
+        id="suitableFilter"
+        onchange="filterRooms()">
+
+        <option value="">
+          Suitable For
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =================================
+     RESULT COUNT
+================================= -->
+
+<div
+  id="resultCount"
+  class="result-count">
+
+  Loading rooms...
+
+</div>
+
+
+<!-- =================================
+     ROOM GRID
+================================= -->
+
+<div
+  id="roomGrid"
+  class="room-grid">
+
+  <div class="loading">
+
+    Loading room data...
+
+  </div>
+
+</div>
+
+
+<script>
+
+
+let allRooms = [];
+
+
+// =================================
+// LOAD DATA
+// =================================
+
+google.script.run
+
+  .withSuccessHandler(function(data) {
+
+    allRooms = data || [];
+
+    createFilters();
+
+    displayRooms(allRooms);
+
+  })
+
+  .withFailureHandler(function(error) {
+
+    document.getElementById("roomGrid").innerHTML =
+
+      `<div class="no-results">
+        ❌ Error loading data.<br><br>
+        ${error.message}
+      </div>`;
+
+  })
+
+  .getRooms();
+
+
+// =================================
+// CREATE FILTERS
+// =================================
+
+function createFilters() {
+
+  const propertyTypes = new Set();
+
+  const furnishing = new Set();
+
+  const suitable = new Set();
+
+
+  allRooms.forEach(room => {
+
+    if (room.propertyType)
+      propertyTypes.add(room.propertyType);
+
+    if (room.furnishing)
+      furnishing.add(room.furnishing);
+
+    if (room.suitableFor)
+      suitable.add(room.suitableFor);
+
+  });
+
+
+  fillSelect(
+    "propertyFilter",
+    propertyTypes
+  );
+
+  fillSelect(
+    "furnishingFilter",
+    furnishing
+  );
+
+  fillSelect(
+    "suitableFilter",
+    suitable
+  );
+
+}
+
+
+// =================================
+// FILL SELECT
+// =================================
+
+function fillSelect(id, values) {
+
+  const select =
+    document.getElementById(id);
+
+
+  [...values]
+    .sort()
+    .forEach(value => {
+
+      const option =
+        document.createElement("option");
+
+      option.value = value;
+
+      option.textContent = value;
+
+      select.appendChild(option);
+
+    });
+
+}
+
+
+// =================================
+// FILTER ROOMS
+// =================================
+
+function filterRooms() {
+
+  const search =
+    document
+      .getElementById("searchInput")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  const property =
+    document
+      .getElementById("propertyFilter")
+      .value;
+
+
+  const furnishing =
+    document
+      .getElementById("furnishingFilter")
+      .value;
+
+
+  const suitable =
+    document
+      .getElementById("suitableFilter")
+      .value;
+
+
+  const filtered =
+    allRooms.filter(room => {
+
+      const searchable = [
+
+        room.area,
+
+        room.address,
+
+        room.propertyType,
+
+        room.furnishing,
+
+        room.suitableFor,
+
+        room.rent
+
+      ]
+
+      .join(" ")
+      .toLowerCase();
+
+
+      const matchesSearch =
+        !search ||
+        searchable.includes(search);
+
+
+      const matchesProperty =
+        !property ||
+        room.propertyType === property;
+
+
+      const matchesFurnishing =
+        !furnishing ||
+        room.furnishing === furnishing;
+
+
+      const matchesSuitable =
+        !suitable ||
+        room.suitableFor === suitable;
+
+
+      return (
+
+        matchesSearch &&
+        matchesProperty &&
+        matchesFurnishing &&
+        matchesSuitable
+
+      );
+
+    });
+
+
+  displayRooms(filtered);
+
+}
+
+
+// =================================
+// DISPLAY ROOMS
+// =================================
+
+function displayRooms(rooms) {
+
+  const grid =
+    document.getElementById("roomGrid");
+
+
+  document.getElementById("resultCount")
+    .textContent =
+      rooms.length +
+      " room/property listing(s) found";
+
+
+  if (!rooms.length) {
+
+    grid.innerHTML = `
+
+      <div class="no-results">
+
+        <div style="font-size:45px;">
+          🏠
+        </div>
+
+        <h3>
+          No rooms found
+        </h3>
+
+        <p>
+          Try changing your search or filters.
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML = "";
+
+
+  rooms.forEach(room => {
+
+    grid.appendChild(
+      createRoomCard(room)
+    );
+
+  });
+
+}
+
+
+// =================================
+// CREATE ROOM CARD
+// =================================
+
+function createRoomCard(room) {
+
+  const card =
+    document.createElement("div");
+
+  card.className =
+    "room-card";
+
+
+  // -------------------------------
+  // PHOTO
+  // -------------------------------
+
+  let photoHTML = `
+
+    <div class="room-photo">
+
+      <div class="no-photo">
+        🏠
+      </div>
+
+    </div>
+
+  `;
+
+
+  if (room.photos) {
+
+    const photoURL =
+      extractPhotoURL(room.photos);
+
+
+    if (photoURL) {
+
+      photoHTML = `
+
+        <div class="room-photo">
+
+          <img
+            src="${photoURL}"
+            onerror="this.parentElement.innerHTML='<div class=no-photo>🏠</div>'"
+          >
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
+  // -------------------------------
+  // CONTACT
+  // -------------------------------
+
+  let contactHTML = "";
+
+
+  if (room.contact) {
+
+    const cleanNumber =
+      room.contact
+        .replace(/[^\d+]/g, "");
+
+
+    contactHTML = `
+
+      <a
+        class="contact-btn"
+        href="tel:${cleanNumber}">
+
+        📞 Contact Owner
+
+      </a>
+
+    `;
+
+  }
+
+
+  // -------------------------------
+  // CARD
+  // -------------------------------
+
+  card.innerHTML = `
+
+    ${photoHTML}
+
+
+    <div class="room-content">
+
+
+      <div class="room-title">
+
+        ${safe(room.propertyType || "Property")}
+
+      </div>
+
+
+      <div class="area">
+
+        📍 ${safe(room.area || "Area not specified")}
+
+      </div>
+
+
+      <div class="rent">
+
+        ₹${safe(room.rent || "Contact Owner")}
+
+        <span style="
+          font-size:13px;
+          font-weight:normal;
+        ">
+
+          / month
+
+        </span>
+
+      </div>
+
+
+      <div class="details">
+
+
+        ${detail(
+          "🛏 Rooms",
+          room.roomsAvailable
+        )}
+
+
+        ${detail(
+          "🪑 Furnishing",
+          room.furnishing
+        )}
+
+
+        ${detail(
+          "👥 Suitable For",
+          room.suitableFor
+        )}
+
+
+        ${detail(
+          "📌 Availability",
+          room.availability
+        )}
+
+
+        ${detail(
+          "💰 Deposit",
+          room.deposit
+        )}
+
+
+        ${detail(
+          "⚡ Electricity",
+          room.electricity
+        )}
+
+
+        ${detail(
+          "💧 Water",
+          room.water
+        )}
+
+
+        ${detail(
+          "🚗 Parking",
+          room.parking
+        )}
+
+      </div>
+
+
+      <div class="address">
+
+        <strong>
+          📍 Full Address
+        </strong>
+
+        <br>
+
+        ${safe(
+          room.address ||
+          "Address not provided"
+        )}
+
+      </div>
+
+
+      ${contactHTML}
+
+
+    </div>
+
+  `;
+
+
+  return card;
+
+}
+
+
+// =================================
+// DETAIL HTML
+// =================================
+
+function detail(label, value) {
+
+  if (!value) {
+
+    return "";
+
+  }
+
+
+  return `
+
+    <div class="detail">
+
+      <strong>
+        ${label}
+      </strong>
+
+      ${safe(value)}
+
+    </div>
+
+  `;
+
+}
+
+
+// =================================
+// PHOTO URL
+// =================================
+
+function extractPhotoURL(value) {
+
+  if (!value) return "";
+
+
+  const text =
+    String(value).trim();
+
+
+  // Google Drive URL
+  const driveMatch =
+    text.match(
+      /https?:\/\/drive\.google\.com\/[^\s,]+/i
+    );
+
+
+  if (driveMatch) {
+
+    return convertDriveURL(
+      driveMatch[0]
+    );
+
+  }
+
+
+  // Normal image URL
+  const urlMatch =
+    text.match(
+      /https?:\/\/[^\s,]+/i
+    );
+
+
+  return urlMatch
+    ? urlMatch[0]
+    : "";
+
+}
+
+
+// =================================
+// GOOGLE DRIVE IMAGE URL
+// =================================
+
+function convertDriveURL(url) {
+
+  const match =
+    url.match(
+      /[-\w]{25,}/
+    );
+
+
+  if (!match) {
+
+    return url;
+
+  }
+
+
+  return (
+    "https://drive.google.com/thumbnail?id=" +
+    match[0] +
+    "&sz=w1000"
+  );
+
+}
+
+
+// =================================
+// SAFE TEXT
+// =================================
+
+function safe(value) {
+
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+</script>
+
+
+</body>
+
+</html>
