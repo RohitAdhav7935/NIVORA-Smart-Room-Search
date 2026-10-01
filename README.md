@@ -141,8 +141,6 @@ NIVORA uses Google-based tools and web technologies to build the complete projec
 * **Google Sheets** – Used to store and manage the collected data.
 * **Google Apps Script** – Used to connect the data with the web application and handle application logic.
 * **HTML** – Used to create the structure of the web interface.
-* **CSS** – Used to design and improve the appearance of the application.
-* **JavaScript** – Used to add search functionality and interactive features.
 * **Looker Studio** – Used to create the analytics dashboard and visualize the collected data.
 
 ---
